@@ -1,0 +1,62 @@
+### Variables
+@baseUrl = http://localhost:5000/api/v1
+@email = test@example.com
+@password = Test@123456
+
+### Health Check
+GET http://localhost:5000/health
+
+### API Info
+GET {{baseUrl}}
+
+### Get Plans
+GET {{baseUrl}}/subscription/plans
+
+### User Registration
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "Test User",
+  "email": "{{email}}",
+  "password": "{{password}}",
+  "confirmPassword": "{{password}}"
+}
+
+### User Login
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+### Get Current User
+@token = {{login.response.body.data.accessToken}}
+GET {{baseUrl}}/auth/me
+Authorization: Bearer {{token}}
+
+### Get User Statistics
+GET {{baseUrl}}/user/statistics
+Authorization: Bearer {{token}}
+
+### Admin Login
+# @name adminLogin
+POST {{baseUrl}}/admin/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@image9.com",
+  "password": "Admin@123456"
+}
+
+### Get Admin Profile
+@adminToken = {{adminLogin.response.body.data.accessToken}}
+GET {{baseUrl}}/admin/auth/me
+Authorization: Bearer {{adminToken}}
+
+### Get Admin Dashboard
+GET {{baseUrl}}/admin/dashboard
+Authorization: Bearer {{adminToken}}
